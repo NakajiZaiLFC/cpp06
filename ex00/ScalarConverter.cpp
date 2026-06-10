@@ -1,22 +1,60 @@
 #include "ScalarConverter.hpp"
 #include <iostream>
 #include <sstream>
+#include <climits>
+#include <iomanip>
 
-enum LiteralType {
-	T_CHAR,
-	T_INT,
-	T_FLOAT,
-	T_DOUBLE,
-	T_SPECIAL_LITERAL,
-	T_INVALID
-};
+static std::string toDecimalString(double v, const std::string& suffix)
+{
+	std::ostringstream oss;
+	oss << std::fixed << std::setprecision(1) << v << suffix;
+	return oss.str();
+}
 
-struct ConversionResult{
-	std::string charStr;
-	std::string intStr;
-	std::string floatStr;
-	std::string doubleStr;
-};
+static std::string intToString(int n)
+{
+	std::ostringstream oss;
+	oss << n;
+	return oss.str();
+}
+
+static std::string makeCharStr(double v)
+{
+	// TODO(human)
+	if (!std::isprint(static_cast<unsigned char>(v)))
+		return "Non displayable"
+	else if (v < -128 || 127 < v)
+		return ""
+	return "";
+}
+
+static std::string makeIntStr(double v)
+{
+	if (v != v || v > INT_MAX || v < INT_MIN)
+		return "impossible";
+	return intToString(static_cast<int>(v));
+}
+
+static std::string makeFloatStr(double v)
+{
+	return toDecimalString(static_cast<float>(v), "f");
+}
+
+static std::string makeDoubleStr(double v)
+{
+	return toDecimalString(v, "");
+}
+
+static ConversionResult buildResult(double v)
+{
+	ConversionResult r;
+	r.charStr = makeCharStr(v);
+	r.intStr = makeIntStr(v);
+	r.floatStr = makeFloatStr(v);
+	r.doubleStr = makeDoubleStr(v);
+	return r;
+}
+
 
 void ScalarConverter::convert(const std::string& str) 
 {
@@ -112,28 +150,33 @@ ConversionResult ScalarConverter::M_convertToFormats(const std::string& str, Lit
 		case T_SPECIAL_LITERAL:
 			r = M_convertSpecialLiteral(str);
 			break;
+		case T_INVALID:
+			break;
 	}
 	return r;
 }
 
 ConversionResult ScalarConverter::M_convertChar(const std::string& str)
 {
-	ConversionResult r;
-	std::ostringstream os;
-	char c = str[0];
-	os << c;
-	r.charStr = os.str();
-	os.str("");
-	os << static_cast<int>(c);
-	r.intStr = os.str();
-	os.str("");
-	os << static_cast<float>(c) << "f";
-	r.floatStr = os.str();
-	os.str("");
-	os << static_cast<double>(c);
-	r.doubleStr = os.str();
-	return r;	
+	return buildResult(static_cast<double>(str[0]));
 }
+
+ConversionResult ScalarConverter::M_convertInt(const std::string& str)
+{
+	std::stringstream ss(str);
+	double value = 0;
+	ss >> value;
+	return buildResult(value);
+}
+
+ConversionResult ScalarConverter::M_convertFloat(const std::string& str)
+{
+	std::stringstream ss(str);
+	float value = 0;
+	ss >> value;
+	return buildResult(static_cast<double>(value));
+}
+
 
 void ScalarConverter::M_printConversionResult(const ConversionResult& r)
 {
@@ -142,5 +185,3 @@ void ScalarConverter::M_printConversionResult(const ConversionResult& r)
 	std::cout << "float: " << r.floatStr << std::endl;
 	std::cout << "double: " << r.doubleStr << std::endl;
 }
-
-

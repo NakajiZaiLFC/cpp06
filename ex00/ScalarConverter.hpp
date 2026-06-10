@@ -1,6 +1,22 @@
 #pragma once
 #include <string>
 
+enum LiteralType {
+	T_CHAR,
+	T_INT,
+	T_FLOAT,
+	T_DOUBLE,
+	T_SPECIAL_LITERAL,
+	T_INVALID
+};
+
+struct ConversionResult{
+	std::string charStr;
+	std::string intStr;
+	std::string floatStr;
+	std::string doubleStr;
+};
+
 class ScalarConverter {
 public:
 	static void convert(const std::string& str);
