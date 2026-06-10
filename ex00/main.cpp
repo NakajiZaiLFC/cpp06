@@ -1,6 +1,12 @@
 #include <iostream>
+#include <limits>
 
 int main(){
+	testCase();
+	
+}
+
+void testCase(){
 	std::cout<< (double)42.0 << std::endl;
 	std::cout<< (double)0.0 << std::endl;
 	std::cout<< (double)3.14 << std::endl;
