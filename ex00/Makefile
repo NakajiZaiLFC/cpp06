@@ -2,7 +2,8 @@ NAME := ex00
 CXX := c++
 CXXFLAGS := -Wall -Werror -Wextra -std=c++98 -pedantic
 FILE := main.cpp \
-		ScalarConverter.cpp
+		ScalarConverter.cpp \
+		ConversionHelper.cpp
 OBJDIR := obj
 
 OBJ := $(addprefix $(OBJDIR)/, $(FILE:.cpp=.o))
