@@ -1,8 +1,8 @@
-NAME := convert
+NAME := ex01
 CXX := c++
 CXXFLAGS := -Wall -Werror -Wextra -std=c++98 -pedantic
 FILE := main.cpp \
-		ScalarConverter.cpp
+		Serializer.cpp
 OBJDIR := obj
 
 OBJ := $(addprefix $(OBJDIR)/, $(FILE:.cpp=.o))
@@ -26,8 +26,4 @@ fclean: clean
 
 re: fclean all
 
-run:re
-	clear
-	valgrind --leak-check=full --show-leak-kinds=all -q ./$(NAME)
-
-.PHONY: re clean fclean all run
+.PHONY: re clean fclean all

@@ -40,5 +40,12 @@ private:
 	static ConversionResult M_convertFloat(const std::string& str);
 	static ConversionResult M_convertDouble(const std::string& str);
 	static ConversionResult M_convertSpecialLiteral(const std::string& str);
+
+	static std::string M_toDecimalString(double v, const std::string& suffix);
+	static std::string M_makeCharStr(double v);
+	static std::string M_makeIntStr(double v);
+	static std::string M_makeFloatStr(double v);
+	static std::string M_makeDoubleStr(double v);
+	static ConversionResult M_buildResult(double v);
 };
 

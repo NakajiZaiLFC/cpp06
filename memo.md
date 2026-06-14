@@ -298,3 +298,4 @@ if (v < 0 || 127 < v) return "impossible";
 
 ## その他
 - `std::isdigit()`, `std::isprint()`など、<cctype>系の関数は、引数の値が`unsigned char`で表現できない場合は未定義動作になるので使用前は`unsigned char`にキャスト
+
